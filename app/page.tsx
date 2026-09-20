@@ -1,22 +1,126 @@
-            {/* SAIT LOGO */}
-            <div className="w-10 h-10 rounded-xl bg-purple-900/60 border border-purple-500/40 p-1 flex items-center justify-center shadow-lg shadow-purple-500/20">
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import {
+  Award,
+  BookOpen,
+  Calendar,
+  CheckCircle2,
+  ChevronRight,
+  Clock,
+  ExternalLink,
+  FileCheck,
+  GraduationCap,
+  History,
+  Inbox,
+  Layers,
+  Linkedin,
+  Mail,
+  MapPin,
+  Menu,
+  MessageSquare,
+  PlusCircle,
+  Send,
+  Sparkles,
+  Trophy,
+  UploadCloud,
+  Users,
+  X
+} from 'lucide-react';
+
+export default function SaitRedesignChallenge() {
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  // Tab States
+  const [teamTab, setTeamTab] = useState<'exec' | 'tech' | 'media' | 'events' | 'pr'>('exec');
+  const [eventTab, setEventTab] = useState<'upcoming' | 'past'>('upcoming');
+  const [loggerTab, setLoggerTab] = useState<'submit' | 'feed'>('submit');
+
+  // Activity Logger Form State
+  const [activities, setActivities] = useState([
+    {
+      id: 1,
+      studentName: 'Naveen Kurian (S5 IT)',
+      eventName: 'Smart India Hackathon 2026',
+      type: 'Technical Hackathon',
+      role: 'Team Lead',
+      proofUrl: 'https://drive.google.com/proof-sih',
+      status: 'Verified',
+      points: '+100 Activity Pts',
+      date: 'Aug 28, 2026'
+    },
+    {
+      id: 2,
+      studentName: 'Aiswarya Raj (S7 IT)',
+      eventName: 'IEEE Kerala Section Conf Paper Publication',
+      type: 'Research Paper',
+      role: 'First Author',
+      proofUrl: 'https://ieee.org/abstract/98231',
+      status: 'Verified',
+      points: '+80 Activity Pts',
+      date: 'Jul 14, 2026'
+    }
+  ]);
+
+  const [formInput, setFormInput] = useState({
+    name: '',
+    eventName: '',
+    type: 'Hackathon',
+    role: 'Participant',
+    proofUrl: ''
+  });
+
+  const [formSuccess, setFormSuccess] = useState(false);
+
+  const handleActivitySubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!formInput.name || !formInput.eventName) return;
+    const newEntry = {
+      id: activities.length + 1,
+      studentName: formInput.name,
+      eventName: formInput.eventName,
+      type: formInput.type,
+      role: formInput.role,
+      proofUrl: formInput.proofUrl || 'https://cusat.ac.in',
+      status: 'Pending Verification',
+      points: '+50 Pts (Pending)',
+      date: 'Just now'
+    };
+    setActivities([newEntry, ...activities]);
+    setFormSuccess(true);
+    setFormInput({ name: '', eventName: '', type: 'Hackathon', role: 'Participant', proofUrl: '' });
+    setTimeout(() => setFormSuccess(false), 4000);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-500 selection:text-white antialiased">
+
+      {/* TOP NOTIFICATION BANNER */}
+      <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-violet-800 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2 border-b border-purple-500/20">
+        <span className="w-2 h-2 rounded-full bg-purple-400 animate-ping"></span>
+        <span><strong>SAIT Notice:</strong> Division of IT Odd-Semester Internal Assessment Schedules Released!</span>
+        <a href="#notifications" className="underline font-bold hover:text-purple-200 ml-1">View Details</a>
+      </div>
+
+      {/* HEADER WITH OFFICIAL CUSAT/SOE SAIT BRANDING */}
+      <header className="sticky top-0 z-50 border-b border-slate-800/80 bg-slate-950/90 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          <Link href="/" className="flex items-center gap-3">
+            {/* OFFICIAL SOE/CUSAT EMBLEM LOGO */}
+            <div className="h-12 w-auto bg-white/10 p-1 rounded-xl border border-purple-500/30 flex items-center justify-center">
               <img 
                 src="https://soe.cusat.ac.in/images/soe_logo.png" 
-                alt="SAIT Logo" 
-                className="w-full h-full object-contain"
-                onError={(e) => {
-                  // Fallback logo badge if external asset is blocked
-                  (e.target as HTMLElement).style.display = 'none';
-                }}
+                alt="SOE CUSAT Logo" 
+                className="h-10 w-auto object-contain"
               />
-              <span className="font-extrabold text-purple-400 text-xs">SAIT</span>
             </div>
             <div>
               <div className="flex items-center gap-1.5">
-                <span className="font-extrabold text-white text-lg tracking-tight">SAIT</span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-1.5 py-0.5 rounded bg-purple-500/10 text-purple-400 border border-purple-500/30">SOE CUSAT</span>
+                <span className="font-black text-white text-xl tracking-tight">SAIT</span>
+                <span className="text-[10px] uppercase font-extrabold tracking-widest px-1.5 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/40">SOE CUSAT</span>
               </div>
-              <p className="text-[10px] text-slate-400 hidden sm:block">Division of Information Technology</p>
+              <p className="text-[11px] text-slate-400 hidden sm:block">Students Association of Information Technology</p>
             </div>
           </Link>
 
@@ -66,13 +170,23 @@
         )}
       </header>
 
-      {/* SECTION A: HERO / LANDING */}
-      <section className="relative pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden">
+      {/* HERO SECTION WITH CUSAT BANNER */}
+      <section className="relative pt-12 pb-20 md:pt-20 md:pb-28 overflow-hidden">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-purple-600/20 blur-[140px] rounded-full pointer-events-none" />
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          
+          {/* CUSAT CREST SEAL */}
+          <div className="flex justify-center mb-6">
+            <img 
+              src="https://cusat.ac.in/images/cusat_logo.png" 
+              alt="CUSAT Crest" 
+              className="h-16 w-auto object-contain drop-shadow-md"
+            />
+          </div>
+
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900 border border-slate-800 text-purple-400 text-xs font-semibold mb-6 shadow-inner">
             <Sparkles size={14} className="text-purple-400 animate-pulse" />
-            <span>Students Association of Information Technology &bull; SOE CUSAT</span>
+            <span>Division of Information Technology &bull; School of Engineering</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] max-w-4xl mx-auto">
@@ -101,11 +215,11 @@
             </a>
           </div>
 
-          {/* Department Campus Hero Photo */}
+          {/* CUSAT SOE Main Campus Photo Banner */}
           <div className="mt-12 max-w-4xl mx-auto rounded-2xl overflow-hidden border border-purple-500/30 shadow-2xl">
             <img 
               src="https://cusat.ac.in/images/slider/1.jpg" 
-              alt="CUSAT SOE Campus" 
+              alt="CUSAT SOE Campus Banner" 
               className="w-full h-64 sm:h-80 object-cover"
             />
           </div>
@@ -127,7 +241,7 @@
         </div>
       </section>
 
-      {/* SECTION B: ABOUT THE DEPARTMENT & SAIT */}
+      {/* ABOUT DEPARTMENT & FACULTY */}
       <section id="about" className="py-20 border-t border-slate-900 bg-slate-900/20">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
@@ -161,7 +275,7 @@
             </div>
           </div>
 
-          {/* Faculty & Administration Directory with Photos */}
+          {/* Faculty Directory (Head of Division: Dr. Jabir) */}
           <div className="mb-14">
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
               <GraduationCap className="text-purple-400" /> Faculty & Staff Administration
@@ -224,7 +338,7 @@
         </div>
       </section>
 
-      {/* SECTION C: ASSOCIATION & PEOPLE */}
+      {/* STUDENT COMMITTEE */}
       <section id="people" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <span className="text-xs uppercase tracking-widest text-purple-400 font-bold flex items-center justify-center gap-1">
@@ -235,7 +349,6 @@
             Meet the students driving technology, event production, logistics, and content for the IT division.
           </p>
 
-          {/* Team Switcher Tabs */}
           <div className="flex flex-wrap justify-center gap-2 mt-6">
             {[
               { id: 'exec', label: 'Executive Council' },
@@ -259,7 +372,6 @@
           </div>
         </div>
 
-        {/* Dynamic Member Cards with Existing Website Photos */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
           {[
             { name: 'Kiran Kuruvilla', role: teamTab === 'exec' ? 'President' : 'Team Lead', batch: 'B.Tech IT 2023-27', img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=300&auto=format&fit=crop&q=80' },
@@ -284,7 +396,7 @@
         </div>
       </section>
 
-      {/* SECTION D: EVENTS & ACTIVITIES */}
+      {/* EVENTS & ARCHIVES */}
       <section id="events" className="py-20 border-t border-slate-900 bg-slate-900/30">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
@@ -408,7 +520,7 @@
         </div>
       </section>
 
-      {/* SECTION E: PLACEMENTS & CAREERS */}
+      {/* PLACEMENTS MARQUEE */}
       <section id="placements" className="py-16 border-t border-slate-900 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-6 flex flex-col md:flex-row md:items-end justify-between gap-4">
           <div>
@@ -420,7 +532,6 @@
           </p>
         </div>
 
-        {/* Infinite Recruiters Marquee */}
         <div className="relative w-full overflow-hidden py-4">
           <div className="flex gap-4 animate-marquee whitespace-nowrap">
             {['Cisco', 'Amazon', 'IBM', 'Oracle', 'TCS Digital', 'Infosys', 'Cognizant', 'UST Global', 'Wipro', 'SAP Labs', 'Accenture', 'KeyValue', 'Cisco', 'Amazon', 'IBM', 'Oracle'].map((c, idx) => (
@@ -433,103 +544,7 @@
         </div>
       </section>
 
-      {/* SECTION F: ALUMNI SPOTLIGHT */}
-      <section id="alumni" className="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-14">
-          <span className="text-xs uppercase tracking-widest text-purple-400 font-bold">Legacy</span>
-          <h2 className="text-3xl font-extrabold text-white mt-1">Alumni Community Spotlight</h2>
-          <p className="text-slate-400 text-xs mt-2">
-            Graduates from the Division of IT shaping leading global tech organizations and high-growth ventures.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {[
-            {
-              name: 'Abhiram Chandran',
-              batch: 'Class of 2018',
-              designation: 'Senior Infrastructure Engineer @ AWS',
-              achievement: 'Architected distributed caching layers processing 1.4M QPS. Active mentor for SAIT cloud bootcamps.',
-            },
-            {
-              name: 'Gopika B.',
-              batch: 'Class of 2020',
-              designation: 'Staff Security Researcher @ Cisco',
-              achievement: 'Discovered zero-day vulnerability in SDN flow controllers (CVE-2023). Regular speaker at nullcon.',
-            },
-            {
-              name: 'Fahad Mohammed',
-              batch: 'Class of 2021',
-              designation: 'Founder & CTO @ ScaleLogic AI',
-              achievement: 'YC-backed founder developing AI agents for automated code compliance. Raised $2.4M seed funding.',
-            },
-          ].map((alum, i) => (
-            <div key={i} className="p-6 rounded-2xl bg-slate-900/60 border border-slate-800 hover:border-purple-500/40 transition">
-              <span className="px-2 py-0.5 text-[10px] uppercase font-bold rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
-                {alum.batch}
-              </span>
-              <h3 className="font-bold text-white text-lg mt-3">{alum.name}</h3>
-              <p className="text-purple-400 text-xs font-semibold mt-0.5">{alum.designation}</p>
-              <p className="text-slate-400 text-xs mt-3 leading-relaxed">{alum.achievement}</p>
-              <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-slate-300 hover:text-purple-400 font-semibold mt-4">
-                View LinkedIn Profile <ExternalLink size={12} />
-              </a>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION G: ACHIEVEMENTS / HALL OF FAME */}
-      <section id="achievements" className="py-20 border-t border-slate-900 bg-slate-900/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-2xl mx-auto mb-14">
-            <span className="text-xs uppercase tracking-widest text-purple-400 font-bold flex items-center justify-center gap-1">
-              <Trophy size={16} /> Hall of Fame
-            </span>
-            <h2 className="text-3xl font-extrabold text-white mt-1">Student & Department Accolades</h2>
-            <p className="text-slate-400 text-xs mt-2">
-              Recognizing national hackathon triumphs, published research, and technical distinctions.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center flex-shrink-0">
-                <Trophy size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-base">Smart India Hackathon (SIH) 1st Prize</h3>
-                <p className="text-xs text-amber-400 font-semibold mt-0.5">Ministry of Jal Shakti Track &bull; ₹1,00,000</p>
-                <p className="text-xs text-slate-400 mt-2">Built an automated edge-AI river pollution detection model with low-power solar sensors.</p>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 text-purple-400 flex items-center justify-center flex-shrink-0">
-                <Award size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-base">Best Paper Award @ IEEE CSNT</h3>
-                <p className="text-xs text-purple-400 font-semibold mt-0.5">Undergraduate Research Division</p>
-                <p className="text-xs text-slate-400 mt-2">Published novel benchmark on Federated Learning privacy preservation in edge health systems.</p>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800 flex items-start gap-4">
-              <div className="w-12 h-12 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center flex-shrink-0">
-                <CheckCircle2 size={24} />
-              </div>
-              <div>
-                <h3 className="font-bold text-white text-base">Kochi Cyber Police Hackathon Champions</h3>
-                <p className="text-xs text-emerald-400 font-semibold mt-0.5">Digital Forensics Track</p>
-                <p className="text-xs text-slate-400 mt-2">Created automated malware analysis sandbox for identifying UPI phishing vectors.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION H: STUDENT ACTIVITY LOGGER */}
+      {/* STUDENT ACTIVITY LOGGER */}
       <section id="activity-logger" className="py-20 border-t border-slate-900 bg-slate-950 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -682,47 +697,14 @@
         </div>
       </section>
 
-      {/* SECTION I: NOTIFICATIONS & ANNOUNCEMENTS */}
-      <section id="notifications" className="py-20 border-t border-slate-900 bg-slate-900/30">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-10">
-            <div>
-              <span className="text-xs uppercase tracking-widest text-purple-400 font-bold">Live Noticeboard</span>
-              <h2 className="text-3xl font-extrabold text-white mt-1">Official Notices & Circulars</h2>
-            </div>
-            <p className="text-xs text-slate-400">Regularly updated with department alerts, exam forms, and hall tickets.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { title: 'S3, S5, S7 B.Tech End-Semester Lab Exam Time Table', date: 'Published: Sept 18, 2026', tag: 'Exams' },
-              { title: 'Campus Drive: Cisco Systems (Software Engineer 1) Shortlist', date: 'Published: Sept 15, 2026', tag: 'Placements' },
-              { title: 'SAIT Website Redesign Challenge Final Submission Guidelines', date: 'Published: Sept 10, 2026', tag: 'SAIT Event' },
-              { title: 'Hostel Re-admission and Mess Fee Notice for Odd Semester', date: 'Published: Sept 02, 2026', tag: 'Hostel' },
-            ].map((n, idx) => (
-              <div key={idx} className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 flex items-center justify-between gap-4">
-                <div>
-                  <span className="px-2 py-0.5 rounded text-[10px] font-bold bg-slate-800 text-purple-400">{n.tag}</span>
-                  <h4 className="font-bold text-white text-sm mt-1">{n.title}</h4>
-                  <p className="text-[11px] text-slate-400 mt-1">{n.date}</p>
-                </div>
-                <button className="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-300 flex-shrink-0">
-                  Read PDF
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION L: FOOTER & CONTACT */}
+      {/* FOOTER & CONTACT */}
       <footer id="contact" className="border-t border-slate-900 bg-slate-950 py-16 text-slate-400 text-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-3 gap-12 mb-12">
           
-          {/* Column 1: Info & Campus Location */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 font-bold text-white text-base">
-              <GraduationCap className="text-purple-400" size={20} /> Division of Information Technology
+            <div className="flex items-center gap-3">
+              <img src="https://soe.cusat.ac.in/images/soe_logo.png" alt="SOE CUSAT" className="h-8 w-auto" />
+              <span className="font-bold text-white text-sm">Division of Information Technology</span>
             </div>
             <p className="text-slate-400 leading-relaxed text-xs">
               School of Engineering, Cochin University of Science and Technology (CUSAT), South Kalamassery, Kochi, Kerala 682022.
@@ -731,24 +713,8 @@
               <p><strong className="text-white">Email:</strong> sait@cusat.ac.in</p>
               <p><strong className="text-white">Phone:</strong> +91 484 2575534</p>
             </div>
-            {/* Map Frame UI */}
-            <div className="w-full h-32 rounded-xl bg-slate-900 border border-slate-800 overflow-hidden relative flex items-center justify-center">
-              <div className="text-center p-3">
-                <MapPin className="text-purple-400 mx-auto mb-1" size={20} />
-                <p className="text-white font-bold text-[11px]">IT Block, SOE CUSAT Campus</p>
-                <a
-                  href="https://maps.google.com/?q=School+of+Engineering+CUSAT+Kalamassery"
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-purple-400 text-[10px] underline"
-                >
-                  Open in Google Maps
-                </a>
-              </div>
-            </div>
           </div>
 
-          {/* Column 2: Quick Links */}
           <div className="grid grid-cols-2 gap-4">
             <div>
               <p className="text-white font-bold uppercase tracking-wider mb-3">Redesign Hub</p>
@@ -770,7 +736,6 @@
             </div>
           </div>
 
-          {/* Column 3: Contact Form UI */}
           <div className="p-6 rounded-2xl bg-slate-900/70 border border-slate-800">
             <h3 className="font-bold text-white text-sm mb-1 flex items-center gap-1.5">
               <MessageSquare size={16} className="text-purple-400" /> Send a Note to SAIT
